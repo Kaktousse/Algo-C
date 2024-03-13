@@ -5,62 +5,63 @@
 
 #define try 10
 
-int ClearScanf(int toclear) {
+void ClearScanf() {
     char c = " ";
-    while (c != "\n") {
-        c = getchar(toclear);
+    while (c != '\n') {
+        c = getchar();
     }
-    return 1;
 }
 
 
-int PrintArray(int array[]) {
-    for (int count = 0; count < sizeof(array); count++) {
-        printf("%d", array[count]);
-        printf(" ");
+void PrintArray(int* array, int arraysize) {
+    for (int count = 0; count < arraysize; ++count) {
+        printf("%d\n", array[count]);
     }
-    printf("\n");
-    return 1;
 }
 
 
-int GetInt(int min, int max) {
+
+
+int GetInt() {
     int given_value;
     int iError;
-    iError = scanf_s("%d", &given_value);
     while (1) {
-        if (iError == 0) {
-            printf("Please choose an integer between %d", min);
-            printf(" & %d", max);
-            printf("\n");
-            ClearScanf(given_value);
-        }
-        else {
+
+        iError = scanf_s("%d", &given_value);
+        ClearScanf();
+        if (iError == 1) {
             return given_value;
         }
+        printf("Please choose an integer");
+        printf("\n");
     }
 
 }
 
-int GetIntInRange(int minmax[2]) {
+int GetIntInRange(int min, int max) {
+    int given_value;
     while (1) {
-        int min, max;
-        while (1) {
-            printf("Choose min and max of the number \n");
-            printf("min: ");
-            int iErrormin = scanf_s("%d", &min);
-            printf("max: ");
-            int iErrormax = scanf_s("%d", &max);
-            if ((min < max && min > 0 && max <= 100) && (iErrormin == 1 && iErrormax == 1)) {
-                minmax[0] = min;
-                minmax[1] = max;
-                return minmax;
-            }
-            printf("\n");
-            ClearScanf(min);
-            ClearScanf(max);
+
+        given_value = GetInt();
+        if (given_value <= max && given_value >= min) {
+            return given_value;
         }
+        printf("Please choose an integer between %d", min);
+        printf(" & %d", max);
+        printf("\n");
+
     }
+
+}
+
+void GetRange(int minmax[2]) {
+
+    printf("Choose min and max of the number \n");
+    printf("min: ");
+    minmax[0] = GetIntInRange(1, 99);
+    printf("max: ");
+    minmax[1] = GetIntInRange(minmax[0] + 1, 100);
+    printf("\n");
 }
 
 
@@ -72,11 +73,11 @@ int EndGame() {
 
         printf("Do you want to restart ? \n");
         printf("Y/y or N/n \n");
-        scanf_s("%c", &retry, 1);
+        scanf_s("%c", &retry, 2);
+        ClearScanf();
         for (int count = 0; count < sizeof(possibilities); count++) {
             for (int c = 0; c < sizeof(possibilities[count]); c++) {
                 if (retry == possibilities[count][c]) {
-                    printf("%d", count);
                     return count;
                 }
             }
@@ -87,38 +88,51 @@ int EndGame() {
 
 
 
+
+
 int main()
 {
     int play = 1;
-    int oldgames[10];
     int gamecount = 0;
-
-
-
+    int* oldgames = (int*)malloc(sizeof(int));
+    if (oldgames == NULL)
+        exit(1);
 
     while (play) {
         int win = 0;
         int range[2];
         int given_value, tofind;
-        GetIntInRange(range);
-
         srand(time(NULL));
-      
-        tofind = rand() % (range[1] + 1 - range[0]) + range[0];
+        GetRange(range);
+
+        tofind = (rand() % (range[1] - range[0] + 1)) + range[0];
+
+        int* pTmp = (int*)realloc(oldgames, (size_t)(sizeof(int) * (gamecount + 1)));
+        if (pTmp == NULL)
+        {
+            free(pTmp);
+            exit(1);
+        }
+
+        oldgames = pTmp;
+
+        oldgames[gamecount] = tofind;
+        gamecount += 1;
+
 
         for (int count = 0; count < try; count++) {
 
             printf("Choose a number between %d", range[0]);
             printf(" & %d", range[1]);
             printf("\n");
-            given_value = GetInt(range[0], range[1]);
+            given_value = GetIntInRange(range[0], range[1]);
             printf("\n");
             if (given_value == tofind) {
                 printf("GG\n");
                 win = 1;
                 break;
             }
-            else if (given_value > tofind) {
+            else if (given_value < tofind) {
                 printf("More ! \n");
             }
             else { printf("Less ! \n"); }
@@ -126,11 +140,12 @@ int main()
         }
         if (!win) { printf("bignoob\n"); }
 
-        oldgames[gamecount] = tofind;
         play = EndGame();
-        printf("%d", play);
-        printf(oldgames);
 
     }
+    printf("\n");
+    PrintArray(oldgames, gamecount);
+    free(oldgames);
+
     return 0;
 }
