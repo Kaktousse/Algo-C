@@ -1,0 +1,13 @@
+﻿'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Users\emaillard-salin\source\repos\Demineur Elia v;\x64\Debug\Demineur Elia v;.exe'. Les symboles ont été chargés.
+'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Windows\System32\ntdll.dll'. 
+'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Windows\System32\kernel32.dll'. 
+'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Windows\System32\KernelBase.dll'. 
+'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Windows\System32\vcruntime140d.dll'. 
+'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Windows\System32\ucrtbased.dll'. 
+Le thread 0x5424 s'est arrêté avec le code 0 (0x0).
+'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Windows\System32\kernel.appcore.dll'. 
+'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Windows\System32\msvcrt.dll'. 
+'Demineur Elia v;.exe' (Win32) : Chargé 'C:\Windows\System32\rpcrt4.dll'. 
+Le thread 0x2bc4 s'est arrêté avec le code 0 (0x0).
+Le thread 0x22f4 s'est arrêté avec le code 0 (0x0).
+Le programme '[24272] Demineur Elia v;.exe' s'est arrêté avec le code 0 (0x0).

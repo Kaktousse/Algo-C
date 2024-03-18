@@ -135,7 +135,7 @@ void PrintGrid(Grid grid) {
 
 
 int main() {
-
+    printf("aaaa");
     struct Grid myGrid;
     myGrid.size = 10;
     myGrid.Bomb = 10;
