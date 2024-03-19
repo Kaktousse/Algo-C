@@ -24,9 +24,59 @@ typedef struct Grid
 
 
 
+
+
+
+
 void ClearBuffer()
 {
     while (getchar() != '\n');
+}
+
+
+
+int GetInt() {
+    int given_value;
+    int iError;
+    while (1) {
+
+        iError = scanf_s("%d", &given_value);
+        ClearBuffer();
+        if (iError == 1) {
+            return given_value;
+        }
+        printf("Please choose an integer");
+        printf("\n");
+    }
+
+}
+
+
+int GetIntInRange(int min, int max) {
+    int given_value;
+    while (1) {
+
+        given_value = GetInt();
+        if (given_value <= max && given_value >= min) {
+            return given_value;
+        }
+        printf("Please choose an integer between %d", min);
+        printf(" & %d", max);
+        printf("\n");
+
+    }
+
+}
+
+
+void GetRange(int minmax[2]) {
+
+    printf("Choose min and max of the number \n");
+    printf("min: ");
+    minmax[0] = GetIntInRange(1, 99);
+    printf("max: ");
+    minmax[1] = GetIntInRange(minmax[0] + 1, 100);
+    printf("\n");
 }
 
 int Retry() {
@@ -36,7 +86,7 @@ int Retry() {
 
     while (1) {
 
-        printf("Do you want to restart ? \n");
+       
         printf("Y/y or N/n \n");
         scanf_s("%c", &retry, 2);
         ClearBuffer();
@@ -89,10 +139,22 @@ int PlaceFlag(Grid grid) {
             if (lign == -1 || column == -1) {
                 return 1;
             }
+
+            if (grid.tiles[lign][column].flag == 1){
+                printf("Do you want to remove the flag");
+                int remove = Retry();
+                if (remove){
+                    grid.tiles[lign][column].flag = 0;
+                    
+                }
+
+            }
+
             if (grid.tiles[lign][column].revealed == 0) {
                 grid.tiles[lign][column].flag = 1;
                 return 1;
             }
+
             printf("Please Choose a non-revealed tile\n");
 
     }
@@ -123,6 +185,29 @@ void CheckEmptyTiles(Grid grid, int setlign, int setcolumn) {
     }
 }
 
+
+
+int PlaceBomb(Grid grid) {
+    int size = grid.size;
+
+    int place = 0;
+    int* bomb = (int*)malloc(sizeof(int) * 2);
+    for (int count = 0; count < grid.Bomb; count++) {
+        while (!place) {
+            bomb[0] = rand() % size;
+            bomb[1] = rand() % size;
+            if (grid.tiles[bomb[0]][bomb[1]].Bomb == 0) {
+                grid.tiles[bomb[0]][bomb[1]].Bomb = 1;
+                place = 1;
+                SetBombAround(grid, bomb[0], bomb[1], size);
+            }
+        }
+        place = 0;
+    }
+    return 1;
+
+}
+
 int AskCoor(Grid grid, int firststart) {
     int lign, column,flag;
 
@@ -148,26 +233,6 @@ int AskCoor(Grid grid, int firststart) {
 }
 
 
-int PlaceBomb(Grid grid) {
-    int size = grid.size;
-
-    int place = 0;
-    int* bomb = (int*)malloc(sizeof(int) * 2);
-    for (int count = 0; count < grid.Bomb; count++) {
-        while (!place) {
-            bomb[0] = rand() % size;
-            bomb[1] = rand() % size;
-            if (grid.tiles[bomb[0]][bomb[1]].Bomb == 0) {
-                grid.tiles[bomb[0]][bomb[1]].Bomb = 1;
-                place = 1;
-                SetBombAround(grid, bomb[0], bomb[1], size);
-            }
-        }
-        place = 0;
-    }
-    return 1;
-
-}
 
 
 Tile** InitGrid(int givensize) {
@@ -241,49 +306,6 @@ void EndGame(Grid grid) {
     }
 }
 
-int GetInt() {
-    int given_value;
-    int iError;
-    while (1) {
-
-        iError = scanf_s("%d", &given_value);
-        ClearBuffer();
-        if (iError == 1) {
-            return given_value;
-        }
-        printf("Please choose an integer");
-        printf("\n");
-    }
-
-}
-
-
-int GetIntInRange(int min, int max) {
-    int given_value;
-    while (1) {
-
-        given_value = GetInt();
-        if (given_value <= max && given_value >= min) {
-            return given_value;
-        }
-        printf("Please choose an integer between %d", min);
-        printf(" & %d", max);
-        printf("\n");
-
-    }
-
-}
-
-
-void GetRange(int minmax[2]) {
-
-    printf("Choose min and max of the number \n");
-    printf("min: ");
-    minmax[0] = GetIntInRange(1, 99);
-    printf("max: ");
-    minmax[1] = GetIntInRange(minmax[0] + 1, 100);
-    printf("\n");
-}
 
 
 int main() {
@@ -326,7 +348,7 @@ int main() {
     EndGame(myGrid);
     printf("\n");
     PrintGrid(myGrid);
-
+    printf("Do you want to restart ? \n");
     if (Retry()) {
         main();
     }
