@@ -86,7 +86,7 @@ int Retry() {
 
     while (1) {
 
-       
+
         printf("Y/y or N/n \n");
         scanf_s("%c", &retry, 2);
         ClearBuffer();
@@ -131,31 +131,31 @@ int PlaceFlag(Grid grid) {
     int lign, column;
     printf("\nChoose where to place the Flag\n");
     while (1) {
-            printf("Choose -1 to cancel\n");
-            printf("Choose the lign : ");
-            lign = GetIntInRange(-1, grid.size);
-            printf("\nChoose the column : ");
-            column = GetIntInRange(-1, grid.size);
-            if (lign == -1 || column == -1) {
-                return 1;
-            }
+        printf("Choose -1 to cancel\n");
+        printf("Choose the lign : ");
+        lign = GetIntInRange(-1, grid.size);
+        printf("\nChoose the column : ");
+        column = GetIntInRange(-1, grid.size);
+        if (lign == -1 || column == -1) {
+            return 1;
+        }
 
-            if (grid.tiles[lign][column].flag == 1){
-                printf("Do you want to remove the flag");
-                int remove = Retry();
-                if (remove){
-                    grid.tiles[lign][column].flag = 0;
-                    
-                }
+        if (grid.tiles[lign][column].flag == 1) {
+            printf("Do you want to remove the flag");
+            int remove = Retry();
+            if (remove) {
+                grid.tiles[lign][column].flag = 0;
 
             }
 
-            if (grid.tiles[lign][column].revealed == 0) {
-                grid.tiles[lign][column].flag = 1;
-                return 1;
-            }
+        }
 
-            printf("Please Choose a non-revealed tile\n");
+        if (grid.tiles[lign][column].revealed == 0) {
+            grid.tiles[lign][column].flag = 1;
+            return 1;
+        }
+
+        printf("Please Choose a non-revealed tile\n");
 
     }
 }
@@ -163,8 +163,8 @@ int PlaceFlag(Grid grid) {
 void SetBombAround(Grid grid, int setlign, int setcolumn, int size) {
     for (int lign = -1; lign < 2; lign++) {
         for (int column = -1; column < 2; column++) {
-            if( (setlign + lign) > -1 && (setlign + lign) < grid.size && (setcolumn + column)>-1 && (setcolumn + column)<size )
-            grid.tiles[setlign + lign][setcolumn + column].BombAround += 1;
+            if ((setlign + lign) > -1 && (setlign + lign) < grid.size && (setcolumn + column) > -1 && (setcolumn + column) < size)
+                grid.tiles[setlign + lign][setcolumn + column].BombAround += 1;
         }
     }
 }
@@ -174,7 +174,7 @@ void CheckEmptyTiles(Grid grid, int setlign, int setcolumn) {
         for (int column = -1; column < 2; column++) {
             if ((setlign + lign) > -1 && (setlign + lign) < grid.size && (setcolumn + column) > -1 && (setcolumn + column) < grid.size) {
 
-                if (grid.tiles[setlign + lign][setcolumn + column].revealed == 0 && grid.tiles[setlign + lign][setcolumn + column].Bomb == 0 && grid.tiles[setlign + lign][setcolumn + column].flag ==0 ) {
+                if (grid.tiles[setlign + lign][setcolumn + column].revealed == 0 && grid.tiles[setlign + lign][setcolumn + column].Bomb == 0 && grid.tiles[setlign + lign][setcolumn + column].flag == 0) {
                     grid.tiles[setlign + lign][setcolumn + column].revealed = 1;
                     if (grid.tiles[setlign + lign][setcolumn + column].BombAround == 0) {
                         CheckEmptyTiles(grid, setlign + lign, setcolumn + column);
@@ -196,7 +196,7 @@ int PlaceBomb(Grid grid) {
         while (!place) {
             bomb[0] = rand() % size;
             bomb[1] = rand() % size;
-            if (grid.tiles[bomb[0]][bomb[1]].Bomb == 0) {
+            if (grid.tiles[bomb[0]][bomb[1]].Bomb == 0 && bomb[0] != lign && bomb[1] != column) {
                 grid.tiles[bomb[0]][bomb[1]].Bomb = 1;
                 place = 1;
                 SetBombAround(grid, bomb[0], bomb[1], size);
@@ -209,19 +209,17 @@ int PlaceBomb(Grid grid) {
 }
 
 int AskCoor(Grid grid, int firststart) {
-    int lign, column,flag;
+    int lign, column, flag;
 
     printf("Choose the lign : ");
-    scanf_s("%d", &lign);
-    ClearBuffer();
+    lign = GetIntInRange(0, grid.size - 1);
     printf("Choose the column : ");
-    scanf_s("%d", &column);
-    ClearBuffer();
+    column = GetIntInRange(0, grid.size - 1);
 
     grid.tiles[lign][column].revealed = 1;
-    
+
     if (firststart == 1) {
-        PlaceBomb(grid);
+        PlaceBomb(grid, lign, colmun);
     }
 
     if (grid.tiles[lign][column].Bomb == 1) {
@@ -264,7 +262,7 @@ void PrintGrid(Grid grid) {
     printf("\t");
     for (int i = 0; i < size; i++) {
         if (i < 10) { printf("   0%d", i); }
-        else { printf("   %d",i); }
+        else { printf("   %d", i); }
 
     }
     printf("\n");
@@ -286,7 +284,7 @@ void PrintGrid(Grid grid) {
                 printf(" | \x1B[31mO \x1B[0m");
             }
             else {
-                printf(" | \x1B[3%dm%d \x1B[0m", (grid.tiles[lign][column].BombAround+2), grid.tiles[lign][column].BombAround);
+                printf(" | \x1B[3%dm%d \x1B[0m", (grid.tiles[lign][column].BombAround + 2), grid.tiles[lign][column].BombAround);
             }
 
         }
@@ -309,14 +307,14 @@ void EndGame(Grid grid) {
 
 
 int main() {
-
-
+    printf("aaaaa");
+    int win;
     int play = 1;
     struct Grid myGrid;
     printf("Choose the size of the grid :");
     myGrid.size = GetIntInRange(2, 100);
     printf("Choose the number of mine :");
-    myGrid.Bomb = GetIntInRange(1, myGrid.size*myGrid.size - 1);
+    myGrid.Bomb = GetIntInRange(1, myGrid.size * myGrid.size - 1);
     srand(time(NULL));
     int firststart = 1;
     int loose = 1;
@@ -336,16 +334,18 @@ int main() {
                     printf("You Win ! ");
                     printf("\n");
                     play = 0;
+                    win = 0;
                 }
                 if (!loose) {
                     printf("You Loose ! ");
                     printf("\n");
                     play = 0;
+                    win = 1;
                 }
             }
         }
     }
-    EndGame(myGrid);
+    EndGame(myGrid, win);
     printf("\n");
     PrintGrid(myGrid);
     printf("Do you want to restart ? \n");
