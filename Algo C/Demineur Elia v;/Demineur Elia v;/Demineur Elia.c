@@ -15,6 +15,10 @@
 
 
 void InitGridSDL(Grid* grid, SDL_Surface* screensurface) {
+
+
+
+
     int rectWidth, rectHeight; 
     rectWidth = (SCREEN_WIDTH / grid->size) -10 ;
     rectHeight = (SCREEN_HEIGHT / grid->size) -10;
@@ -25,7 +29,7 @@ void InitGridSDL(Grid* grid, SDL_Surface* screensurface) {
             grid->tiles[i][j].rect.w = rectWidth;
             grid->tiles[i][j].rect.h = rectHeight;
 
-            grid->tiles[i][j].rect.x = (j * (rectHeight *1.25))  +15;
+            grid->tiles[i][j].rect.x = (j * (rectHeight *1.25)) +15;
             grid->tiles[i][j].rect.y = (i * (rectWidth *1.25)) +15;
 
 
@@ -41,13 +45,12 @@ void InitGridSDL(Grid* grid, SDL_Surface* screensurface) {
 }
 
 
-void PrintGrid() {
 
-}
 
 
 void SetWindow(Grid* grid, SDL_Window* window, SDL_Surface* screenSurface){
 
+     
 
     //Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -58,20 +61,24 @@ void SetWindow(Grid* grid, SDL_Window* window, SDL_Surface* screenSurface){
     else
     {
         //Create window
+
         window = SDL_CreateWindow("Minesweeper", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+
+        
 
         if (window == NULL)
         {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         }
 
+        
+
         else
         {
 
-            //Fill the surface white
+            screenSurface = SDL_GetWindowSurface(window);
+           
             SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 218, 218, 218));
-
-
 
             //Update the surface
             SDL_UpdateWindowSurface(window);
@@ -88,6 +95,7 @@ void SetWindow(Grid* grid, SDL_Window* window, SDL_Surface* screenSurface){
 
 
 void QuitGame(SDL_Window* window) {
+
     SDL_DestroyWindow(window);
 
 
@@ -120,7 +128,9 @@ int main() {
         myGrid.bombCount = GetIntInRange(5, maxBomb)  ;
 
         SDL_Window* window = NULL;
-        SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
+
+        SDL_Surface* screenSurface = NULL;
+
         
 
         myGrid.remainingTiles = (myGrid.size * myGrid.size) - myGrid.bombCount;
@@ -134,7 +144,7 @@ int main() {
         InitGrid(&myGrid);
         system("cls");
 
-        SetWindow(&myGrid, window,screenSurface);
+        SetWindow(&myGrid, window, screenSurface);
 
         InitGridSDL(&myGrid, screenSurface);
 
@@ -144,7 +154,6 @@ int main() {
 
             printf("\nPress F to place a flag or Choose the tile to reveal.\n ");
 
-            PrintGrid(&myGrid);
 
             if (_kbhit) {
                 if (_getch() == 'f') {
