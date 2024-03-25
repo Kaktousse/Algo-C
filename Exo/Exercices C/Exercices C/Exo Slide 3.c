@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
+#include<math.h>
 
 typedef struct String
 {
@@ -12,7 +13,7 @@ typedef struct String
 String Create(const char* str)
 {
     String myString; 
-    myString.iLength = sizeof(str);
+    myString.iLength = strlen(str);
     myString.pContent = (char*)malloc(sizeof(char) * myString.iLength); 
     for (int i = 0; i < myString.iLength; i++) {
         myString.pContent[i] = str[i]; 
@@ -56,17 +57,17 @@ String Concatenate2(const char* str1, const char* str2)
 {
     String newString;
 
-    newString.iLength = sizeof(str1) + sizeof(str2);
+    newString.iLength = strlen(str1) + strlen(str2);
     newString.pContent = (char*)malloc(sizeof(char) * newString.iLength);
 
     int count = 0;
 
-    for (int i = 0; i < sizeof(str1); i++) {
+    for (int i = 0; i < strlen(str1); i++) {
         newString.pContent[count] = str1[i];
         count += 1;
     }
 
-    for (int i = 0; i < sizeof(str2); i++) {
+    for (int i = 0; i < strlen(str2); i++) {
         newString.pContent[count] = str2[i];
         count += 1;
     }
@@ -78,7 +79,7 @@ String SubString(const String* pStr1, int iStartIndex, int iLength)
 {
     String newString;
 
-    newString.iLength = iLength * sizeof(char);
+    newString.iLength = iLength;
     newString.pContent = (char*)malloc(sizeof(char) * newString.iLength);
 
     for (int i = 0; i < iLength; i++) {
@@ -101,7 +102,7 @@ String InsertString(const String* pStr1, const String* Pstr2, int iIndex)
 
 
         int count = 0;
-        printf("%d", pStr1->iLength);
+
         for (int i = 0; i < pStr1->iLength ; i++) {
             if (i == iIndex) {
                 for (int j = 0; j < Pstr2->iLength; j++) {
@@ -124,17 +125,47 @@ String InsertString(const String* pStr1, const String* Pstr2, int iIndex)
 
 int AreEquals(const String* pStr1, const String* pStr2)
 {
+    if (pStr1->iLength != pStr2->iLength) {
+        return 0;
+    }
+    
+    for (int i = 0; i < pStr1->iLength; i++) {
+        if (pStr1->pContent[i] != pStr2->pContent[i]) {
+            return 0;
+        }
+    }
 
+    return 1;
 }
+
+
 
 int TryCastToInt(const String* pStr, int* pResult)
 {
 
+    for (int i = 0; i < pStr->iLength; i++) {
+        if ( '0' <= pStr->pContent[i] && pStr->pContent[i] <= '9') {
+            continue;
+        }
+        else {
+            return 0;
+        }
+    }
+    int count = pow(10, pStr->iLength-1);
+
+    *pResult = 0;
+
+    for (int j = 0; j < pStr->iLength; j++) {
+        *pResult += (int)( pStr->pContent[j] - '0')*count ;
+        count = count / 10;
+    }
+
+    return 1; 
 }
 
 void DestroyString(String* pStr)
 {
-
+    free(pStr->pContent);
 }
 
 
@@ -157,12 +188,37 @@ int main() {
     String str5 = SubString(&str3, 2, 2);
     PrintString(&str5);
 
-    String str6 = InsertString(&str4, &str1, 6);
+    String str6 = InsertString(&str4, &str1, 8);
     PrintString(&str6);
 
-    Destroy(&str1);
-    Destroy(&str2);
-    Destroy(&str3);
+    String str7 = Create("365");
+    PrintString(&str7);
+    int Result1;
+
+    String equal1 = Create("CCC"); 
+    String equal2 = Create("BBB");
+
+    printf(" %d \n", AreEquals(&equal1, &equal1));
+    printf(" %d \n", AreEquals(&equal1, &equal2));
+    printf(" %d \n", AreEquals(&equal1, &str1));
+
+
+    if (TryCastToInt(&str7, &Result1)) {
+        printf("%d\n", Result1);
+    }
+
+    String str8 = Create("3dd46");
+    PrintString(&str8);
+    int Result2;
+
+
+    if (TryCastToInt(&str8, &Result2)) {
+        printf("%d\n", Result2);
+    }
+
+    DestroyString(&str1);
+    DestroyString(&str2);
+    DestroyString(&str3);
 
     return 0;
 

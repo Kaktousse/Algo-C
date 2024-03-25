@@ -13,6 +13,12 @@ typedef int BOOL;
 #define RESET "\x1B[0m"
 
 
+typedef struct Coord
+{
+    int x;
+    int y;
+} Coord;
+
 
 typedef struct Tile
 {
@@ -39,7 +45,9 @@ typedef struct Grid
 
 int CheckWin(const Grid* grid);
 
-int PlaceFlag(Grid* grid);
+int PlaceFlag(Grid* grid, Coord coord);
+
+void RemoveFlag(Grid* grid, Coord coord);
 
 void SetBombAround(Grid* grid, int setlign, int setcolumn);
 
@@ -49,11 +57,11 @@ void RevealTile(Grid* grid, int setlign, int setcolumn, BOOL firststart);
 
 BOOL SafeZone(Grid* grid, int lign, int column, int x, int y);
 
-int PlaceBomb(Grid* grid, int lign, int column, int playCoor[2]);
+int PlaceBomb(Grid* grid, int lign, int column, Coord coord);
 
 int* AskCoor(Grid* grid, int coor[2]);
 
-int UpdateGrid(Grid* grid, BOOL firststart, int coor[2]);
+BOOL UpdateGrid(Grid* grid, BOOL firststart, Coord coord);
 
 void InitGrid(Grid* grid);
 

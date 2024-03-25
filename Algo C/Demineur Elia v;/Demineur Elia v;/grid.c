@@ -8,50 +8,29 @@
 #include <time.h> 
 
 
-
-
 int CheckWin(const Grid* grid) {
     if (grid->remainingTiles == 0)
         return TRUE;
     return FALSE;
 }
 
-int PlaceFlag(Grid* grid) {
+int PlaceFlag(Grid* grid,Coord coord ) {
 
-    int lign, column;
-    printf("\nChoose where to place the Flag\n");
-
-    while (TRUE) {
-
-        printf("Choose -1 to cancel\n");
-
-        printf("Choose the lign : ");
-        lign = GetIntInRange(-1, grid->size);
-        printf("Choose the column : ");
-        column = GetIntInRange(-1, grid->size);
-
-        if (lign == -1 || column == -1) {
-            return 1;
-        }
-
-        if (grid->tiles[lign][column].flag == 1) {
-            printf("Do you want to remove the flag");
-            int remove = YesOrNo();
-            if (remove) {
-                grid->tiles[lign][column].flag = 0;
-                return 1;
-            }
-
-        }
-
-        if (grid->tiles[lign][column].revealed == 0) {
-            grid->tiles[lign][column].flag = 1;
-            return 1;
-        }
-
-        printf("Please Choose a non-revealed tile\n");
-
+    if (grid->tiles[coord.x][coord.y].flag == 1) {
+        RemoveFlag(grid, coord);
+        return 0;
     }
+    if (grid->tiles[coord.x][coord.y].revealed == 1) {
+        return 0;
+    }
+
+    grid->tiles[coord.x][coord.y].flag = 1;
+
+    return 1;
+}
+
+void RemoveFlag(Grid* grid, Coord coord) {
+    grid->tiles[coord.x][coord.y].flag = 0;
 }
 
 void SetBombAround(Grid* grid, int setlign, int setcolumn) {
@@ -107,7 +86,7 @@ BOOL SafeZone(Grid* grid, int lign, int column, int x, int y) {
     for (int i = -grid->safezone; i < grid->safezone +1; i++) {
         for (int j = -grid->safezone; j < grid->safezone + 1; j++) {
             if (lign + i == x && column + j == y) {
-                return NULL;
+                return FALSE;
             }
         }
     }
@@ -115,7 +94,7 @@ BOOL SafeZone(Grid* grid, int lign, int column, int x, int y) {
     return TRUE;
 }
 
-int PlaceBomb(Grid* grid, int lign, int column, int playCoor[2]) {
+int PlaceBomb(Grid* grid, int lign, int column, Coord coord) {
 
 
 
@@ -129,7 +108,7 @@ int PlaceBomb(Grid* grid, int lign, int column, int playCoor[2]) {
     for (int lign = 0; lign < grid->size; lign++) {
         for (int column = 0; column < grid->size; column++) {
 
-            if (SafeZone(grid, playCoor[0], playCoor[1], lign, column) == TRUE) {
+            if (SafeZone(grid, coord.x, coord.y, lign, column) == TRUE) {
                 possiblesValues[count] = (int*)malloc(sizeof(int) * 2);
                 if (possiblesValues[count] == NULL)
                     exit(1);
@@ -141,7 +120,6 @@ int PlaceBomb(Grid* grid, int lign, int column, int playCoor[2]) {
         }
     }
 
-    int size = grid->size;
     int place = 0;
     int random_index;
 
@@ -154,6 +132,7 @@ int PlaceBomb(Grid* grid, int lign, int column, int playCoor[2]) {
 
         possiblesValues[random_index][0] = possiblesValues[count - 1][0];
         possiblesValues[random_index][1] = possiblesValues[count - 1][1];
+
         count -= 1;
 
         grid->tiles[x][y].isBomb = 1;
@@ -182,12 +161,12 @@ int* AskCoor(Grid* grid, int coor[2]) {
     
 }
 
-int UpdateGrid(Grid* grid, BOOL firststart, int coor[2]) {
+BOOL UpdateGrid(Grid* grid, BOOL firststart, Coord coord) {
 
-    int lign = coor[0];
-    int column = coor[1];
+    int lign = coord.x;
+    int column = coord.y;
     if (firststart == TRUE) {
-        PlaceBomb(grid, lign, column, coor);
+        PlaceBomb(grid, lign, column, coord);
     }
 
     if (grid->tiles[lign][column].isBomb == 1) {
