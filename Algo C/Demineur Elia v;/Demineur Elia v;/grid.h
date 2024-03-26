@@ -13,6 +13,9 @@ typedef int BOOL;
 #define RESET "\x1B[0m"
 
 
+
+
+
 typedef struct Coord
 {
     int x;
@@ -26,6 +29,8 @@ typedef struct Tile
     int bombAround;
     int revealed;
     int flag;
+
+    SDL_Color color;
 
     SDL_Rect rect;
 

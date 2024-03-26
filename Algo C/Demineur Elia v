@@ -1,6 +1,10 @@
 ﻿  Demineur Elia.c
-C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(32,65): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(33,64): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(106,12): warning C4026: fonction déclarée avec une liste de paramètres formels
-C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(143,15): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(45,66): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(46,64): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(255,9): warning C4101: 'height' : variable locale non référencée
+C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(255,17): warning C4101: 'width' : variable locale non référencée
+C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(254,9): warning C4101: 'ypos' : variable locale non référencée
+C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(287,12): warning C4026: fonction déclarée avec une liste de paramètres formels
+C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(331,15): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\Demineur Elia v;\Demineur Elia.c(96): warning C4715: 'SetWindow' : les chemins de contrôle ne retournent pas tous une valeur
   Demineur Elia v;.vcxproj -> C:\Users\emaillard-salin\Documents\GitHub\Algo-C\Algo C\Demineur Elia v;\x64\Debug\Demineur Elia v;.exe

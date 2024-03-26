@@ -34,12 +34,16 @@ void RemoveFlag(Grid* grid, Coord coord) {
 }
 
 void SetBombAround(Grid* grid, int setlign, int setcolumn) {
+    SDL_Color text_color[8] = { {228,255,0}, {0,169,113},{30,101,168},{154,59,255}, {207,148,67}, {224,65,0},{255,132,193},{255,57,57} };
     for (int lign = -1; lign < 2; lign++) {
         for (int column = -1; column < 2; column++) {
-            if ((setlign + lign) > -1 && (setlign + lign) < grid->size && (setcolumn + column) > -1 && (setcolumn + column) < grid->size)
+            if ((setlign + lign) > -1 && (setlign + lign) < grid->size && (setcolumn + column) > -1 && (setcolumn + column) < grid->size) {
                 grid->tiles[setlign + lign][setcolumn + column].bombAround += 1;
+                grid->tiles[setlign + lign][setcolumn + column].color = text_color[grid->tiles[setlign + lign][setcolumn + column].bombAround];
+            }
         }
     }
+    
 }
 
 Tile* GetTile(Grid* grid, int x, int y)
@@ -169,7 +173,7 @@ BOOL UpdateGrid(Grid* grid, BOOL firststart, Coord coord) {
         PlaceBomb(grid, lign, column, coord);
     }
 
-    if (grid->tiles[lign][column].isBomb == 1) {
+    if (grid->tiles[lign][column].isBomb == 1 && grid->tiles[lign][column].flag == 0) {
         return TRUE;
     }
 

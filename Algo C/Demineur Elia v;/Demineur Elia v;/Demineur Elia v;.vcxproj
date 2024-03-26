@@ -141,6 +141,10 @@
     <ClInclude Include="getinput.h" />
     <ClInclude Include="grid.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="arial.ttf" />
+    <Font Include="Pixel.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

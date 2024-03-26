@@ -33,4 +33,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="arial.ttf">
+      <Filter>Fichiers d%27en-tête\Fichiers de ressources</Filter>
+    </Font>
+    <Font Include="Pixel.ttf">
+      <Filter>Fichiers d%27en-tête\Fichiers de ressources</Filter>
+    </Font>
+  </ItemGroup>
 </Project>
