@@ -24,6 +24,7 @@ int PlaceFlag(Grid* grid,Coord coord ) {
         return 0;
     }
 
+    grid->flag -= 1;
     grid->tiles[coord.x][coord.y].flag = 1;
 
     return 1;
@@ -31,6 +32,7 @@ int PlaceFlag(Grid* grid,Coord coord ) {
 
 void RemoveFlag(Grid* grid, Coord coord) {
     grid->tiles[coord.x][coord.y].flag = 0;
+    grid->flag += 1; 
 }
 
 void SetBombAround(Grid* grid, int setlign, int setcolumn) {
