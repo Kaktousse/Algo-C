@@ -89,8 +89,8 @@ void RevealTile(Grid* grid, int setlign, int setcolumn, BOOL firststart) {
 }
 
 BOOL SafeZone(Grid* grid, int lign, int column, int x, int y) {
-    for (int i = -grid->safezone; i < grid->safezone +1; i++) {
-        for (int j = -grid->safezone; j < grid->safezone + 1; j++) {
+    for (int i = -1; i < 2; i++) {
+        for (int j = -1; j < 2; j++) {
             if (lign + i == x && column + j == y) {
                 return FALSE;
             }
@@ -138,6 +138,7 @@ int PlaceBomb(Grid* grid, int lign, int column, Coord coord) {
 
         possiblesValues[random_index][0] = possiblesValues[count - 1][0];
         possiblesValues[random_index][1] = possiblesValues[count - 1][1];
+        free(possiblesValues[count - 1]);
 
         count -= 1;
 
@@ -147,6 +148,10 @@ int PlaceBomb(Grid* grid, int lign, int column, Coord coord) {
 
     }
 
+    for (int i = 0; i < count; i++) {
+        free(possiblesValues[i]);
+    }
+    free(possiblesValues);
 
     return 1;
 

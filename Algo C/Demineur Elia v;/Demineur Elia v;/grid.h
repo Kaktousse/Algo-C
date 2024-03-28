@@ -46,6 +46,9 @@ typedef struct Grid
 
     int remainingTiles;
 
+    SDL_Texture* listTexture; 
+    SDL_Surface* listSurface; 
+
 } Grid;
 
 int CheckWin(const Grid* grid);
