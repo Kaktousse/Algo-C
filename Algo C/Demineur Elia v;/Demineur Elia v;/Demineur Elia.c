@@ -773,7 +773,7 @@ void InitSDL(Window* pSDLWindow)
         exit(1);
     }
 
-    TTF_Init(); //#TODO check if success
+    TTF_Init(); 
 
     //Etape 2: Construction de la Fenêtre (Window)
     pSDLWindow->pWindow = SDL_CreateWindow("MineSweeper", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);

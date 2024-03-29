@@ -79,10 +79,9 @@ void RevealTile(Grid* grid, int setlign, int setcolumn, BOOL firststart) {
 
     grid->remainingTiles -= 1;
 
-    if (!firststart && tile->bombAround > 0)
+    if (tile->bombAround > 0)
         return;
 
-    firststart = FALSE;
 
     for (int lign = -1; lign < 2; lign++) {
         for (int column = -1; column < 2; column++) {
@@ -107,7 +106,7 @@ int PlaceBomb(Grid* grid, int lign, int column, Coord coord) {
 
 
 
-    int** possiblesValues = (int**)malloc((sizeof(int) * (grid->size * grid->size) * 2)); // {{0,3}{4,5},} count = 91        size 10 bomb 10
+    int** possiblesValues = (int**)malloc((sizeof(int*) * (grid->size * grid->size) * 2)); // {{0,3}{4,5},} count = 91        size 10 bomb 10
     if (possiblesValues == NULL)
         exit(1);
 
@@ -198,7 +197,7 @@ BOOL UpdateGrid(Grid* grid, BOOL firststart, Coord coord) {
 
 void InitGrid(Grid* grid) {
 
-    grid->tiles = (Tile**)malloc(sizeof(Tile) * grid->size);
+    grid->tiles = (Tile**)malloc(sizeof(Tile*) * grid->size);
     if (grid->tiles == NULL)
         exit(1);
 
