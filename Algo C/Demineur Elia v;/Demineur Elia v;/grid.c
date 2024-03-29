@@ -36,12 +36,15 @@ void RemoveFlag(Grid* grid, Coord coord) {
 }
 
 void SetBombAround(Grid* grid, int setlign, int setcolumn) {
-    SDL_Color text_color[8] = { {228,255,0}, {0,169,113},{30,101,168},{154,59,255}, {207,148,67}, {224,65,0},{255,132,193},{255,57,57} };
+
+    SDL_Color text_color[8] = { {1,0,254}, {1,127,1},{254,0,0},{1,0,128}, {129,0,2}, {0,128,129},{0,0,0},{128,128,128} };
+
+
     for (int lign = -1; lign < 2; lign++) {
         for (int column = -1; column < 2; column++) {
             if ((setlign + lign) > -1 && (setlign + lign) < grid->size && (setcolumn + column) > -1 && (setcolumn + column) < grid->size) {
                 grid->tiles[setlign + lign][setcolumn + column].bombAround += 1;
-                grid->tiles[setlign + lign][setcolumn + column].color = text_color[grid->tiles[setlign + lign][setcolumn + column].bombAround];
+                grid->tiles[setlign + lign][setcolumn + column].color = text_color[grid->tiles[setlign + lign][setcolumn + column].bombAround - 1];
             }
         }
     }
@@ -104,12 +107,12 @@ int PlaceBomb(Grid* grid, int lign, int column, Coord coord) {
 
 
 
-    int** possiblesValues = (int**)malloc((sizeof(int) * (grid->size * grid->size) * 2));
+    int** possiblesValues = (int**)malloc((sizeof(int) * (grid->size * grid->size) * 2)); // {{0,3}{4,5},} count = 91        size 10 bomb 10
     if (possiblesValues == NULL)
         exit(1);
 
     int count = 0;
-    int totalSize = grid->size * grid->size;
+
 
     for (int lign = 0; lign < grid->size; lign++) {
         for (int column = 0; column < grid->size; column++) {
@@ -126,7 +129,7 @@ int PlaceBomb(Grid* grid, int lign, int column, Coord coord) {
         }
     }
 
-    int place = 0;
+
     int random_index;
 
     for (int counter = 0; counter < grid->bombCount; counter++) {
@@ -136,7 +139,7 @@ int PlaceBomb(Grid* grid, int lign, int column, Coord coord) {
         int x = possiblesValues[random_index][0];
         int y = possiblesValues[random_index][1];
 
-        possiblesValues[random_index][0] = possiblesValues[count - 1][0];
+        possiblesValues[random_index][0] = possiblesValues[count - 1][0]; 
         possiblesValues[random_index][1] = possiblesValues[count - 1][1];
         free(possiblesValues[count - 1]);
 
@@ -148,9 +151,11 @@ int PlaceBomb(Grid* grid, int lign, int column, Coord coord) {
 
     }
 
+    
     for (int i = 0; i < count; i++) {
         free(possiblesValues[i]);
     }
+
     free(possiblesValues);
 
     return 1;
@@ -176,6 +181,8 @@ BOOL UpdateGrid(Grid* grid, BOOL firststart, Coord coord) {
 
     int lign = coord.x;
     int column = coord.y;
+
+
     if (firststart == TRUE) {
         PlaceBomb(grid, lign, column, coord);
     }
@@ -213,6 +220,7 @@ void PrintGrid(const Grid* grid) {
 
 
     int size = grid->size;
+
     printf("\t");
 
     for (int k = 0; k < size; k++) {
@@ -221,7 +229,7 @@ void PrintGrid(const Grid* grid) {
 
     }
 
-    printf("\n");
+    printf("\n");   
 
     for (int lign = 0; lign < size; ++lign) {
 

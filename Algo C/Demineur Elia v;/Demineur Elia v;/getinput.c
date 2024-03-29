@@ -56,7 +56,7 @@ void GetRange(int minmax[2]) {
 int YesOrNo() {
 
     char retry;
-    char possibilities[2][2] = { {'n','N'},{'y','Y'} };
+    char possibilities[][3] = {{'n','N','no'},{'y','Y','yes'}};
 
     while (1) {
 
